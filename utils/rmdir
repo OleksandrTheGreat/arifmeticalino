@@ -1,0 +1,10 @@
+const  rmdir = require('./rmdir.js');
+
+var args = process.argv.splice(2);
+
+args.forEach(function (arg) {
+
+	console.log('removing "' + arg + '"');
+	
+	rmdir.sync(arg);
+});

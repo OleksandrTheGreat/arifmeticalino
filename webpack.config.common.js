@@ -2,22 +2,31 @@ const path = require('path');
 const package = require('./package.json');
 
 var
+
+  getEntry = function(entry){
+   
+    if (entry)
+      return entry;
+
+    return './dist/build/index.ts';
+  },
+
   getOutput = function () {
     return {
-      filename: '[name].js',
+      filename: package.main,
       path: path.resolve(__dirname, 'dist/bin'),
       library: package.name,
       libraryTarget: "umd"
     };
   },
 
-  getModule = function (tsconfig) {
+  getModule = function (settings) {
     return {
       rules: [
         {
           test: /\.tsx?$/,
           use: [
-            'awesome-typescript-loader?configFileName=' + tsconfig
+            'awesome-typescript-loader?configFileName=' + settings.tsconfig
           ]
         },
         // {
@@ -87,7 +96,7 @@ var
     };
   },
 
-  getResolve = function (tsconfig) {
+  getResolve = function () {
     return {
       extensions: [".ts", ".js", ".css", ".scss", ".html"],
       modules: [
@@ -99,6 +108,7 @@ var
 
 module.exports = {
   package: package,
+  getEntry: getEntry,
   getOutput: getOutput,
   getModule: getModule,
   getResolve: getResolve
