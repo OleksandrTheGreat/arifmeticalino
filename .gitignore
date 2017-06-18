@@ -1,0 +1,9 @@
+.idea/
+.vscode/
+dist/
+dist-demo/
+node_modules/
+src/**/*.d.ts
+src/**/*.js*
+demo/**/*.d.ts
+demo/**/*.js*
