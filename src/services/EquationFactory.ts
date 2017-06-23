@@ -1,6 +1,8 @@
+import { Operations } from "../domain/Operations";
+import { Action } from "../domain/Action";
 import { Equation } from "../domain/Equation";
-import { Operations } from "../domain/Oprations";
-import { RandomService, IRandomService } from "./RandomService";
+import { IRandomService } from "./RandomService";
+import { IActionService } from "./ActionService";
 
 export interface IEquationSettings {
     operantionsCount?: number;
@@ -11,19 +13,29 @@ export interface IEquationSettings {
 export class EquationFactory {
 
     constructor(
+        private actionService: IActionService,
         private randomService: IRandomService
     ) { }
 
-    public CreateEquation(
+    public Create(
         settings?: IEquationSettings
     ): Equation {
 
         let eq = new Equation();
+        let actions: Array<Action> = [];
 
         settings = this.adjustSettings(settings);
 
-        eq.operations = this.generateOperations(settings.operantionsCount, settings.allowedOperations);
-        eq.operands = this.generateOperands(settings.operandDimension, eq.operations);
+        eq.operations = this.generateOperations(settings);
+
+        let action = this.createEquationAction(eq.operations.slice(), settings.operandDimension);
+
+console.log(action)
+console.log(this.actionToString(action))
+
+        eq.operands = this.getOperands(action);
+
+        eq.result = this.actionService.Solve(action);
 
         return eq;
     }
@@ -53,101 +65,140 @@ export class EquationFactory {
     }
 
     private generateOperations(
-        operantionsCount: number,
-        allowedOperations: Array<Operations>
+        settings: IEquationSettings
     ): Array<Operations> {
 
         let operations: Array<Operations> = [];
 
-        for (let i = 0; i < operantionsCount; i++) {
-
-            let randomOperationIndex = this.randomService.Randomise(0, allowedOperations.length - 1);
-
-            operations.push(allowedOperations[randomOperationIndex]);
-        }
+        for (let i = 0; i < settings.operantionsCount; i++)
+            operations.push(this.randomizeOperation(settings));
 
         return operations;
     }
 
-    private generateOperands(
-        operandDimension: number,
-        operations: Array<Operations>
+    private randomizeOperation(settings: IEquationSettings): Operations {
+        return settings.allowedOperations[
+            this.randomService.Randomize(0, settings.allowedOperations.length - 1)];
+    }
+
+    private getOperands(
+        action: Action
     ): Array<number> {
 
-        var operands: Array<number> = [];
+        let operands: Array<number> = [];
 
-        for (let i = 0; i < operations.length; i++) {
+        let operand1 =
+            action.operand1.constructor.name == "Action"
+                ? this.getOperands(action.operand1)
+                : action.operand1;
 
-            let operation = operations[i];
+        let operand2 =
+            action.operand2.constructor.name == "Action"
+                ? this.getOperands(action.operand2)
+                : action.operand2;
 
-            switch (operation) {
-
-                case Operations.Divide:
-
-                    operands[i] = operands[i] || this.generateNaturalNumber(operandDimension);
-                    operands[i + 1] = operands[i + 1] || this.generateNaturalNumber(operandDimension);
-
-                    let operand1 = operands[i];
-                    let operand2 = operands[i + 1];
-
-                    if (operand1 < operand2) {
-                        operands[i] = operand2;
-                        operands[i + 1] = operand1;
-                    }
-
-                    operand1 = operands[i];
-                    operand2 = operands[i + 1];
-
-                    if (!this.hasDivRest(operand1, operand2))
-                        break;
-
-                    if (!this.hasDivRest(operand1, operand2 + 1)) {
-                        operands[i] = operand1;
-                        operands[i + 1] = operand2 + 1;
-                        break;
-                    }
-
-                    if (!this.hasDivRest(operand1 + 1, operand2)) {
-                        operands[i] = operand1 + 1;
-                        operands[i + 1] = operand2;
-                        break;
-                    }
-
-                    break;
-
-                default:
-                    operands[i] = operands[i] || this.generateNumber(operandDimension);
-                    operands[i + 1] = operands[i + 1] || this.generateNumber(operandDimension);
-            }
-        }
+        operands = operands.concat(operand1);
+        operands = operands.concat(operand2);
 
         return operands;
     }
 
-    private generateNumber(
-        dimension: number
-    ): number {
-        return this.randomService.Randomise(0, dimension * 10 - 1);
+    private createEquationAction(
+        operations: Array<Operations>,
+        operandDimension: number
+    ): Action {
+
+        let handledOperations: Array<number> = [];
+        let action: Action;
+        let equationOperationQueueIndex = 0;
+        let equationOperationQueue: Array<Operations> = [
+            Operations.Multiply,
+            Operations.Divide,
+            Operations.Substract,
+            Operations.Add
+        ];
+
+        while (handledOperations.length < operations.length) {
+
+            let operationIndex = this.getUnhandeledOperationIndex(
+                operations, handledOperations, equationOperationQueue[equationOperationQueueIndex]);
+
+            if (operationIndex == -1) {
+                equationOperationQueueIndex++;
+
+                if (equationOperationQueueIndex > equationOperationQueue.length - 1)
+                    throw "Non of known operations were found in equation";
+
+                continue;
+            }
+
+            handledOperations.push(operationIndex);
+
+            if (!action) {
+                action = this.actionService.Create(operations[operationIndex], operandDimension);
+                continue;
+            }
+
+            action = this.actionService.Create(operations[operationIndex], operandDimension, action);
+        }
+
+        return action;
     }
 
-    private generateNaturalNumber(
-        dimension: number
-    ): number {
-        return this.randomService.Randomise(1, dimension * 10 - 1);
+    private getUnhandeledOperationIndex(
+        operations: Array<Operations>,
+        handledOperations: Array<number>,
+        operation: Operations
+    ) {
+
+        for (let i = 0; i < operations.length; i++) {
+
+            if (operations[i] != operation)
+                continue;
+
+            let isHandeled = handledOperations.filter(x => x == i).length > 0;
+
+            if (!isHandeled)
+                return i;
+        }
+
+        return -1;
     }
 
-    private hasDivRest(
-        operand1: number,
-        operand2: number
-    ): boolean {
+    private actionToString(action: Action): string {
 
-        let result = operand1 / operand2;
-        let rest = Math.floor(result) - result;
+        let operand1 =
+            action.operand1.constructor.name == "Action"
+                ? this.actionToString(action.operand1)
+                : action.operand1;
 
-// console.log("Op1 = " + operand1);
-// console.log("Op2 = " + operand2);
-// console.log("rest = " + rest);
+        let operand2 =
+            action.operand2.constructor.name == "Action"
+                ? this.actionToString(action.operand2)
+                : action.operand2;
 
-        return rest < 0;
+        let eq = operand1 + this.operationToString(action.operation) + operand2;
+
+        if (action.operation == Operations.Multiply 
+            || action.operation == Operations.Divide
+            || action.operation == Operations.Add)
+            return eq;
+
+        return "(" + eq + ")";
+    }
+
+    private operationToString(operation: Operations): string {
+        switch (operation) {
+            case Operations.Add:
+                return "+";
+            case Operations.Divide:
+                return "/";
+            case Operations.Multiply:
+                return "*";
+            case Operations.Substract:
+                return "-";
+            default:
+                throw "Unknown operation";
+        }
     }
 }
