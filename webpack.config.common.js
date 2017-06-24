@@ -1,16 +1,24 @@
 const path = require('path');
 const package = require('./package.json');
+const rmdir = require('xfs/rmdir.js');
 const copy = require('xfs/copy.js');
-const mkdir = require('xfs/mkdir.js');
-const fs = require('fs');
-const DTSBundlePlugin = require('xwebpack/DTSBundlePlugin.js'); 
-const CopyPlugin = require('xwebpack/CopyPlugin.js'); 
+const DTSBundlePlugin = require('xwebpack/DTSBundlePlugin.js');
+const CopyPlugin = require('xwebpack/CopyPlugin.js');
 
 var
 
+  outputDirName = 'dist',
+
   folders = {
-    build: path.resolve(__dirname, 'dist/build'),
-    dist: path.resolve(__dirname, 'dist/bin')
+    src: path.resolve(__dirname, 'src'),
+    output: path.resolve(__dirname, outputDirName),
+    build: path.resolve(__dirname, outputDirName + '/build'),
+    dist: path.resolve(__dirname, outputDirName + '/bin')
+  },
+
+  prepack = function () {
+    rmdir.sync(folders.output);
+    copy.sync(folders.src, folders.build);
   },
 
   getEntry = function (entry) {
@@ -23,9 +31,9 @@ var
 
   getOutput = function () {
     return {
-      filename: package.main,
+      filename: package.main || 'index.js',
       path: folders.dist,
-      library: package.name,
+      library: package.name || 'unknown',
       libraryTarget: "umd"
     };
   },
@@ -115,8 +123,8 @@ var
       descriptionFiles: ["package.json"]
     };
   },
-  
-  getPlugins = function(plugins) {
+
+  getPlugins = function (plugins) {
 
     if (plugins)
       return plugins;
@@ -127,11 +135,13 @@ var
         dtsBundlePath: folders.dist + '/index.d.ts'
       }),
       new CopyPlugin({
-        from: "./package.json", 
+        from: "./package.json",
         to: folders.dist + '/package.json'
       })
     ]
   };
+
+prepack();
 
 module.exports = {
   package: package,
