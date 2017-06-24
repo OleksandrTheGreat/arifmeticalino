@@ -38,6 +38,7 @@
     "sourcemap": "^0.1.0",
     "typescript": "^2.3.4",
     "webpack": "^2.6.1",
-    "xjasmine": "../xjasmine"
+    "xjasmine": "../xjasmine",
+    "xfs": "../xfs"
   }  
 }

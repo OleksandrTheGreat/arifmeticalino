@@ -3,45 +3,14 @@ const package = require('./package.json');
 const copy = require('xfs/copy.js');
 const mkdir = require('xfs/mkdir.js');
 const fs = require('fs');
+const DTSBundlePlugin = require('xwebpack/DTSBundlePlugin.js'); 
+const CopyPlugin = require('xwebpack/CopyPlugin.js'); 
 
 var
 
   folders = {
     build: path.resolve(__dirname, 'dist/build'),
     dist: path.resolve(__dirname, 'dist/bin')
-  },
-
-  prepack = function () {
-
-    var
-      copyPackageJson = function () {
-        mkdir.sync(folders.dist);
-        copy.sync("./package.json", folders.dist + '/package.json');
-      },
-      bundleDts = function (targetDirPath) {
-
-        var 
-          files = fs.readdirSync(targetDirPath),
-          dtsBundlePath = folders.dist + '/index.d.ts';
-
-        files.forEach((item) => {
-
-          var
-            itemPath = targetDirPath + '/' + item, 
-            stat = fs.statSync(itemPath);
-
-          if (stat.isDirectory())
-            bundleDts(itemPath);
-
-          if (item.indexOf('.d.ts') < 0 || item == 'index.d.ts')
-            return;
-
-          fs.appendFileSync(dtsBundlePath, fs.readFileSync(itemPath));
-        });
-      };
-
-    copyPackageJson();
-    bundleDts(folders.build);
   },
 
   getEntry = function (entry) {
@@ -145,14 +114,30 @@ var
       ],
       descriptionFiles: ["package.json"]
     };
-  };
+  },
+  
+  getPlugins = function(plugins) {
 
-prepack();
+    if (plugins)
+      return plugins;
+
+    return [
+      new DTSBundlePlugin({
+        targetDirPath: folders.build,
+        dtsBundlePath: folders.dist + '/index.d.ts'
+      }),
+      new CopyPlugin({
+        from: "./package.json", 
+        to: folders.dist + '/package.json'
+      })
+    ]
+  };
 
 module.exports = {
   package: package,
   getEntry: getEntry,
   getOutput: getOutput,
   getModule: getModule,
-  getResolve: getResolve
+  getResolve: getResolve,
+  getPlugins: getPlugins
 };

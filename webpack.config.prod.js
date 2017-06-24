@@ -5,6 +5,7 @@ module.exports = {
   output: common.getOutput(),
   module: common.getModule({ tsconfig: "tsconfig.prod.json" }),
   resolve: common.getResolve(),
+  //plugins: common.getPlugins(),
   devtool: "source-map",
   bail: true,
   cache: false
