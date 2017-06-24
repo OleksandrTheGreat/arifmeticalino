@@ -17,9 +17,9 @@
         "typeRoots": [
             "node_modules/@types"
         ],
-        "baseUrl": "./",
-        "include": [
-            "./src/**/*"
-        ]
-    }
+        "baseUrl": "./"
+    },
+    "include": [
+        "./src/**/*"
+    ]
 }

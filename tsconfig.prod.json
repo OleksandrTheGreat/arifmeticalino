@@ -18,15 +18,15 @@
             "node_modules/@types"
         ],
         "baseUrl": "./",
-        "declaration": true,
-        "include": [
-            "./dist/build/**/*"
-        ],
-        "exclude": [
-            "src",
-            "utils",
-            "node_modules",
-            "**/*.spec.ts"
-        ]
-    }
+        "declaration": true
+    },
+    "include": [
+        "./dist/build/**/*"
+    ],
+    "exclude": [
+        "src",
+        "utils",
+        "node_modules",
+        "**/*.spec.ts"
+    ]
 }

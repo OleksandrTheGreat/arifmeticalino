@@ -1,20 +1,61 @@
 const path = require('path');
 const package = require('./package.json');
+const copy = require('xfs/copy.js');
+const mkdir = require('xfs/mkdir.js');
+const fs = require('fs');
 
 var
 
-  getEntry = function(entry){
-   
+  folders = {
+    build: path.resolve(__dirname, 'dist/build'),
+    dist: path.resolve(__dirname, 'dist/bin')
+  },
+
+  prepack = function () {
+
+    var
+      copyPackageJson = function () {
+        mkdir.sync(folders.dist);
+        copy.sync("./package.json", folders.dist + '/package.json');
+      },
+      bundleDts = function (targetDirPath) {
+
+        var 
+          files = fs.readdirSync(targetDirPath),
+          dtsBundlePath = folders.dist + '/index.d.ts';
+
+        files.forEach((item) => {
+
+          var
+            itemPath = targetDirPath + '/' + item, 
+            stat = fs.statSync(itemPath);
+
+          if (stat.isDirectory())
+            bundleDts(itemPath);
+
+          if (item.indexOf('.d.ts') < 0 || item == 'index.d.ts')
+            return;
+
+          fs.appendFileSync(dtsBundlePath, fs.readFileSync(itemPath));
+        });
+      };
+
+    copyPackageJson();
+    bundleDts(folders.build);
+  },
+
+  getEntry = function (entry) {
+
     if (entry)
       return entry;
 
-    return './dist/build/index.ts';
+    return folders.build + '/index.ts';
   },
 
   getOutput = function () {
     return {
       filename: package.main,
-      path: path.resolve(__dirname, 'dist/bin'),
+      path: folders.dist,
       library: package.name,
       libraryTarget: "umd"
     };
@@ -105,6 +146,8 @@ var
       descriptionFiles: ["package.json"]
     };
   };
+
+prepack();
 
 module.exports = {
   package: package,

@@ -1,8 +1,9 @@
-import { TestCases } from "./TestExtensions";
-import { Equation } from "../domain/Equation";
-import { Operations } from "../domain/Operations";
-import { RandomService, IRandomService } from "../services/RandomService";
-import { EquationService, IEquationSettings, IEquationService } from "../services/EquationService";
+import { TestCases } from "xjasmine";
+import { Equation, Operations } from "../domain";
+import { 
+    RandomService, IRandomService, 
+    EquationService, IEquationSettings, IEquationService 
+} from "../services";
 
 describe("EquationFactory", () => {
 

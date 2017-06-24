@@ -4,10 +4,11 @@
   "description": "Arithmetic operations trainer for kids",
   "main": "arifmeticalino.js",
   "scripts": {
-    "build:1": "node utils/rmdir dist",
-    "build:2": "node utils/copy ./src ./dist/build",
-    "build:3": "webpack --config webpack.config.prod.js --progress --profile --bail",
-    "build": "npm run build:1 && npm run build:2 && npm run build:3",
+    "build:1": "node node_modules/xfs/rmdir dist",
+    "build:2": "node node_modules/xfs/copy ./src ./dist/build",
+    "build:3": "tsc -p tsconfig.prod.json",
+    "build:4": "webpack --config webpack.config.prod.js --progress --profile --bail",
+    "build": "npm run build:1 && npm run build:2 && npm run build:3 && npm run build:4",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch"
   },
@@ -22,6 +23,9 @@
   },
   "author": "OleksandrTheGreat",
   "license": "ISC",
+  "dependencies": {
+    "abus": "..//ABus//dist//bin"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.5.51",
     "awesome-typescript-loader": "^3.1.3",
@@ -33,6 +37,7 @@
     "requirejs": "^2.3.3",
     "sourcemap": "^0.1.0",
     "typescript": "^2.3.4",
-    "webpack": "^2.6.1"
-  }
+    "webpack": "^2.6.1",
+    "xjasmine": "../xjasmine"
+  }  
 }
