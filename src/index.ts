@@ -1,13 +1,4 @@
-import * as ko from 'knockout';
+//import * as ko from 'knockout';
+import { AppModel } from "./app/models/AppModel";
 
-
-export let viewModel = {
-
-    settings: {
-        allowedOperations: ko.observable([]),
-        operationsCount: ko.observable(1),
-        operandDimension: ko.observable(1)
-    }
-
-
-};
+ko.applyBindings(new AppModel());

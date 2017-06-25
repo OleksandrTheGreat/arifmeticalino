@@ -8,8 +8,12 @@ module.exports = {
   resolve: common.getResolve(),
   plugins: [
     new CopyPlugin({
-      from: common.folders.build + '/app/app.html',
+      from: common.folders.build + '/app/index.html',
       to: common.folders.bin + '/index.html'
+    }),
+    new CopyPlugin({
+      from: common.folders.build + '/app/index.css',
+      to: common.folders.bin + '/index.css'
     })
   ],
   devtool: "source-map",
