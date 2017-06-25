@@ -20,7 +20,9 @@
   "author": "OleksandrTheGreat",
   "license": "ISC",
   "dependencies": {
-    "abus": "..//ABus//dist//bin"
+    "@types/knockout": "^3.4.41",
+    "abus": "..//ABus//dist//bin",
+    "knockout": "^3.4.2"
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.51",
@@ -37,5 +39,5 @@
     "xjasmine": "../xjasmine",
     "xfs": "../xfs",
     "xwebpack": "../xwebpack"
-  }  
+  }
 }
