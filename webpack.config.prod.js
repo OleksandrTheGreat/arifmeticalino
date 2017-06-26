@@ -1,19 +1,41 @@
 const common = require('./webpack.config.common.js');
-const CopyPlugin = require('xwebpack/CopyPlugin.js');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+var _module = common.getModule({ tsconfig: "tsconfig.prod.json" });
+_module.rules.push(
+  {
+    test: /\.s?css$/,
+    use: ExtractTextPlugin.extract({
+      fallback: "to-string-loader",
+      use: [
+        {
+          loader: "css-loader",
+          options: {
+            sourceMap: true,
+            importLoaders: true
+          }
+        },
+        {
+          loader: "sass-loader",
+          options: {
+            sourceMap: true
+          }
+        }
+      ]
+    })
+  });
 
 module.exports = {
   entry: common.getEntry(),
   output: common.getOutput(),
-  module: common.getModule({ tsconfig: "tsconfig.prod.json" }),
+  module: _module,
   resolve: common.getResolve(),
   plugins: [
-    new CopyPlugin({
-      from: common.folders.build + '/app/index.html',
-      to: common.folders.bin + '/index.html'
-    }),
-    new CopyPlugin({
-      from: common.folders.build + '/app/index.css',
-      to: common.folders.bin + '/index.css'
+    new HtmlWebpackPlugin(),
+    new ExtractTextPlugin({
+      filename: 'index.css',
+      allChunks: true
     })
   ],
   devtool: "source-map",

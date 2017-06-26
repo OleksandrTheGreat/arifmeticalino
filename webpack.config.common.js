@@ -17,7 +17,7 @@ var
   },
 
   prepack = function () {
-    
+
     console.log("removing \"" + folders.dist + "\"");
     rmdir.sync(folders.dist);
 
@@ -51,17 +51,10 @@ var
             'awesome-typescript-loader?configFileName=' + settings.tsconfig
           ]
         },
-        // {
-        //   test: /\.ts$/,
-        //   loader: 'tslint-loader',
-        //   options: {
-        //     configFileName: tsconfig
-        //   }
-        // },
-        // {
-        //   test: /\.html$/,
-        //   use: "html-loader"
-        // },
+        {
+          test: /\.html$/,
+          use: "html-loader"
+        },
         // {
         //   test: /\.s?css$/,
         //   use: [
@@ -70,34 +63,6 @@ var
         //     "css-loader",
         //     "sass-loader"
         //   ]
-        // },
-        // {
-        //   test: /\.s?css$/,
-        //   use: ExtractTextPlugin.extract({
-        //     fallback: "to-string-loader",
-        //     use: [
-        //       {
-        //         loader: "css-loader",
-        //         options: {
-        //           sourceMap: true,
-        //           importLoaders: true
-        //         }
-        //       },
-        //       {
-        //         loader: 'resolve-url-loader',
-        //         options: {
-        //           sourceMap: true,
-        //           keepQuery: true
-        //         }
-        //       },
-        //       {
-        //         loader: "sass-loader",
-        //         options: {
-        //           sourceMap: true
-        //         }
-        //       }
-        //     ]
-        //   })
         // },
         // {
         //   test: /\.(gif|png|jpe?g|svg)$/i,

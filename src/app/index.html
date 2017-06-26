@@ -6,7 +6,15 @@
     <body>
         
         <div id="settings">
-            <input type="text" data-bind="value: settings.operationsCount" />
+            <div>
+                <input type="text" data-bind="value: settings.allowedOperations" />
+            </div>
+            <div>
+                <input type="text" data-bind="value: settings.operationsCount" />
+            </div>
+            <div>
+                <input type="text" data-bind="value: settings.operandDimension" />
+            </div>
         </div>
 
         <div id="statistics">
@@ -14,7 +22,7 @@
 
         <div id="progress">
         </div>
-        
+
     </body>
     <script src="index.js"></script>
 </html>
