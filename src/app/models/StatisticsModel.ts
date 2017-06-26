@@ -1,3 +1,5 @@
+import * as ko from "knockout";
+
 export class StatisticsModel {
     answersCount: KnockoutObservable<number> = ko.observable(0);
     answersFromFirstTryCount: KnockoutObservable<number> = ko.observable(0);

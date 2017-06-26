@@ -5,6 +5,7 @@
   "main": "scripts/index.js",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js --progress --profile --bail",
+    "build:watch": "webpack --config webpack.config.prod.js --watch --progress --profile --bail",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch"
   },

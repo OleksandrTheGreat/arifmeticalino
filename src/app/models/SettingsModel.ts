@@ -1,3 +1,4 @@
+import * as ko from "knockout";
 import { Operations } from "../../domain";
 
 export class SettingsModel {
