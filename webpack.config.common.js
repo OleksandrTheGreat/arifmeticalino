@@ -43,43 +43,31 @@ var
   },
 
   getModule = function (settings) {
+
+    var rules = [
+      {
+        test: /\.tsx?$/,
+        use: [
+          'awesome-typescript-loader?configFileName=' + settings.tsconfig
+        ]
+      },
+      // {
+      //   test: /\.s?css$/,
+      //   use: [
+      //     "to-string-loader",
+      //     "style-loader",
+      //     "css-loader",
+      //     "sass-loader"
+      //   ]
+      // }
+    ];
+
+    if (settings && settings.rules)
+      for (var i = 0; i < settings.rules.length; i++)
+        rules.push(settings.rules[i]);
+
     return {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          use: [
-            'awesome-typescript-loader?configFileName=' + settings.tsconfig
-          ]
-        },
-        {
-          test: /\.html$/,
-          use: "html-loader"
-        },
-        // {
-        //   test: /\.s?css$/,
-        //   use: [
-        //     "to-string-loader",
-        //     "style-loader",
-        //     "css-loader",
-        //     "sass-loader"
-        //   ]
-        // },
-        // {
-        //   test: /\.(gif|png|jpe?g|svg)$/i,
-        //   use: [
-        //     'url-loader?name=/assets/images/[hash].[ext]',
-        //     'image-webpack-loader?{optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}, mozjpeg: {quality: 65}}'
-        //   ]
-        // },
-        // {
-        //   test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        //   use: 'url-loader?limit=10000&mimetype=application/font-woff&name=/assets/fonts/[name].[ext]'
-        // },
-        // {
-        //   test: /\.(ttf|eot|otf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        //   use: 'url-loader?name=/assets/fonts/[name].[ext]'
-        // }
-      ]
+      rules: rules
     };
   },
 
@@ -93,21 +81,24 @@ var
     };
   },
 
-  getPlugins = function (plugins) {
+  getPlugins = function (settings) {
 
-    if (plugins)
-      return plugins;
-
-    return [
+    var plugins = [
       new DTSBundlePlugin({
         targetDirPath: folders.build,
-        dtsBundlePath: folders.bin + '/index.d.ts'
+        dtsBundlePath: folders.bin + '/scripts/index.d.ts'
       }),
       new CopyPlugin({
         from: "./package.json",
         to: folders.bin + '/package.json'
       })
-    ]
+    ];
+
+    if (settings && settings.plugins)
+      for (var i = 0; i < settings.plugins.length; i++)
+        plugins.push(settings.plugins[i]);
+
+    return plugins;
   };
 
 prepack();

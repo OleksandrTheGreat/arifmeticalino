@@ -2,7 +2,7 @@
   "name": "arifmeticalino",
   "version": "1.0.0",
   "description": "Arithmetic operations trainer for kids",
-  "main": "index.js",
+  "main": "scripts/index.js",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js --progress --profile --bail",
     "test": "karma start",
