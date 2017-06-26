@@ -3,16 +3,16 @@ import { Operations } from "../../domain";
 
 export class SettingsModel {
 
-    allowedOperations: KnockoutObservable<Array<Operations>>;
+    allowedOperations: KnockoutObservableArray<string>;
     operationsCount: KnockoutObservable<number>;
     operandDimention: KnockoutObservable<number>;
 
     constructor(
-        allowedOperations: Array<Operations>,
+        allowedOperations: Array<string>,
         operationsCount: number,
         operandDimention: number
     ) {
-        this.allowedOperations = ko.observable(allowedOperations);
+        this.allowedOperations = ko.observableArray(allowedOperations);
         this.operationsCount = ko.observable(operationsCount);
         this.operandDimention = ko.observable(operandDimention);
     }

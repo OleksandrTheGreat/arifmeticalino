@@ -10,6 +10,7 @@ var
   outputDirName = 'dist',
 
   folders = {
+    root: __dirname,
     src: path.resolve(__dirname, 'src'),
     dist: path.resolve(__dirname, outputDirName),
     build: path.resolve(__dirname, outputDirName + '/build'),

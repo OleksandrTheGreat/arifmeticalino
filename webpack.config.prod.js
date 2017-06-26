@@ -16,6 +16,14 @@ var
     new ExtractTextPlugin({
       filename: 'styles/index.css',
       allChunks: true
+    }),
+    new CopyPlugin({
+      from: common.folders.root + "/node_modules/bootstrap/dist/css/bootstrap.min.css",
+      to: common.folders.bin + '/styles/bootstrap.min.css'
+    }),
+    new CopyPlugin({
+      from: common.folders.root + "/node_modules/bootstrap/dist/fonts",
+      to: common.folders.bin + '/fonts'
     })
   ],
 
