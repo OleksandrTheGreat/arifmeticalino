@@ -11,14 +11,24 @@ export class SettingsModelHandler {
         this.handleAllowedOperations(settings);
         this.handleOperationsCount(settings);
         this.handleOperandDimention(settings);
+
+        this.previousAllowedOperations = settings.allowedOperations().slice();
+
+        console.log(this.previousAllowedOperations)
     }
+
+    private previousAllowedOperations: Array<string>;
 
     private handleAllowedOperations(settings: SettingsModel): void {
 
         settings.allowedOperations.subscribe((operations: Array<string>) => {
 
-            if (!operations.length)
-                settings.allowedOperations([Operations.Add.toString()]);
+            if (!operations || operations.length == 0){
+                settings.allowedOperations(this.previousAllowedOperations);
+                return;
+            }
+
+            this.previousAllowedOperations = settings.allowedOperations().slice();
         });
     }
 
