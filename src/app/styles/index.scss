@@ -1,25 +1,61 @@
 //@import 'D:/PRG/JS/arifmeticalino/node_modules/bootstrap/dist/css/bootstrap.min.css'; 
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
 #settings {
     float: left;
-    padding: 1rem;
+    padding: 1em;
 }
 #settings .control-label {
     text-align: left;
 }
 #settings .form-group {
-    margin-bottom: .25rem;
+    margin-bottom: .25em;
 }
 #settings .form-control[type="number"] {
-    width: 5rem;
-    padding-right: 2px;
+    padding: 2px;
+    height: 2em;
 }
 
 #statistics {
     float: right;
+    padding: 1em;
+}
+#statistics .container-fluid {
+    white-space: nowrap;
+    min-width: 17em;
 }
 
 #progress {
-    
+    text-align: center;
+    top: 40%;
+    position: absolute;
+    width: 100%;
 }
 
+#progress .current {
+    font-size: 3em;
+    display: inline-block;
+}
+
+#progress .current input[type="number"] {
+    display: inline-block;
+    width: 3em;
+    //border: 1px solid #ccc;
+    //border-radius: 4px;
+}
+
+.header {
+    font-size: 1.5em;
+    border-bottom: 1px solid #ebebeb;
+    margin: .5em 0;
+    text-align: center;
+    width: 100%;
+}
+
+input[type="number"] {
+    text-align: right;
+}

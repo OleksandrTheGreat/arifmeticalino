@@ -8,22 +8,25 @@ export class SettingsModelHandler {
     constructor(
         settings: SettingsModel
     ) {
+        this.saveInitialState(settings);
+
         this.handleAllowedOperations(settings);
         this.handleOperationsCount(settings);
         this.handleOperandDimention(settings);
-
-        this.previousAllowedOperations = settings.allowedOperations().slice();
-
-        console.log(this.previousAllowedOperations)
     }
 
     private previousAllowedOperations: Array<string>;
+
+    private saveInitialState(settings: SettingsModel) {
+
+        this.previousAllowedOperations = settings.allowedOperations().slice() || [Operations.Add.toString()];
+    }
 
     private handleAllowedOperations(settings: SettingsModel): void {
 
         settings.allowedOperations.subscribe((operations: Array<string>) => {
 
-            if (!operations || operations.length == 0){
+            if (!operations || operations.length == 0) {
                 settings.allowedOperations(this.previousAllowedOperations);
                 return;
             }

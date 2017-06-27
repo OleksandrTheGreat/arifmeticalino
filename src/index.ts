@@ -8,7 +8,7 @@ import { i18UA, i18EN } from "./app/i18n";
 import { SettingsModelHandler } from "./app/handlers/SettingsModelHandler";
 
 let appModel = new AppModel();
-appModel.i18n = new i18UA();
+appModel.i18n = new i18EN();
 
 new SettingsModelHandler(appModel.settings);
 

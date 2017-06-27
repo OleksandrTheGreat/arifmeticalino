@@ -1,9 +1,14 @@
 import * as ko from "knockout";
 
 export class StatisticsModel {
-    answersCount: KnockoutObservable<number> = ko.observable(0);
-    answersFromFirstTryCount: KnockoutObservable<number> = ko.observable(0);
-    answersFromSecondTryCount: KnockoutObservable<number> = ko.observable(0);
-    answersFromThirdTryCount: KnockoutObservable<number> = ko.observable(0);
-    wrongAnswersCount: KnockoutObservable<number> = ko.observable(0);
+    answersTotal: KnockoutObservable<number> = ko.observable(0);
+    rightAnswersFromFirstTryCount: KnockoutObservable<number> = ko.observable(0);
+    rightAnswersFromSecondTryCount: KnockoutObservable<number> = ko.observable(0);
+    rightAnswersFromThirdTryCount: KnockoutObservable<number> = ko.observable(0);
+    rightAnswersCount: KnockoutComputed<number> = ko.computed(() => {
+        return this.rightAnswersFromFirstTryCount() + this.rightAnswersFromSecondTryCount() + this.rightAnswersFromThirdTryCount();
+    });
+    wrongAnswersCount: KnockoutComputed<number> = ko.computed(() => {
+        return this.answersTotal() - this.rightAnswersCount();
+    });
 }
