@@ -1,10 +1,10 @@
 import { Operations } from '../../domain';
-import { SettingsModel, StatisticsModel, ProgressModel } from "./";
-import { Ii18n } from "../i18n";
+import { SettingsModel, StatisticsModel, EquationsModel } from "./";
+import { Ii18n, i18UA } from "../i18n";
 
 export class AppModel {
-    settings = new SettingsModel(["0"], 1, 1);
+    settings = new SettingsModel([Operations.Add], 1, 1);
     statistics = new StatisticsModel();
-    progress = new ProgressModel();
-    i18n: Ii18n;
+    equations = new EquationsModel();
+    i18n: Ii18n = new i18UA();
 };

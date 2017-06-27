@@ -8,12 +8,23 @@ export class SettingsModel {
     operandDimention: KnockoutObservable<number>;
 
     constructor(
-        allowedOperations: Array<string>,
+        allowedOperations: Array<Operations>,
         operationsCount: number,
         operandDimention: number
     ) {
-        this.allowedOperations = ko.observableArray(allowedOperations);
+        this.allowedOperations = ko.observableArray(this.operationsTostring(allowedOperations));
         this.operationsCount = ko.observable(operationsCount);
         this.operandDimention = ko.observable(operandDimention);
+    }
+
+    private operationsTostring(operations: Array<Operations>): Array<string> {
+
+        let result: Array<string> = [];
+
+        operations.forEach(x => {
+            result.push(x.toString());
+        });
+
+        return result;
     }
 }

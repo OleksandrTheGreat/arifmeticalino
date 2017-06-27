@@ -1,18 +1,21 @@
 import * as ko from "knockout";
 
+import { ABus } from "abus";
 import { SettingsModel } from "../models/SettingsModel";
 import { Operations } from "../../domain/Operations";
+import { SettingsChanged } from "../events";
 
 export class SettingsModelHandler {
 
     constructor(
-        settings: SettingsModel
+        private _settings: SettingsModel,
+        private _bus: ABus
     ) {
-        this.saveInitialState(settings);
+        this.saveInitialState(_settings);
 
-        this.handleAllowedOperations(settings);
-        this.handleOperationsCount(settings);
-        this.handleOperandDimention(settings);
+        this.handleAllowedOperations(_settings);
+        this.handleOperationsCount(_settings);
+        this.handleOperandDimention(_settings);
     }
 
     private previousAllowedOperations: Array<string>;
@@ -32,6 +35,8 @@ export class SettingsModelHandler {
             }
 
             this.previousAllowedOperations = settings.allowedOperations().slice();
+
+            this._bus.Send(this.modelToEvent(settings));
         });
     }
 
@@ -43,6 +48,8 @@ export class SettingsModelHandler {
 
             if (operationsCount > defaultOperationsCount)
                 settings.operationsCount(defaultOperationsCount);
+
+            this._bus.Send(this.modelToEvent(settings));
         });
     }
 
@@ -54,6 +61,22 @@ export class SettingsModelHandler {
 
             if (operandDimention > defaultOperandDimention)
                 settings.operandDimention(defaultOperandDimention);
+
+            this._bus.Send(this.modelToEvent(settings));
         });
+    }
+
+    public modelToEvent(settings: SettingsModel): SettingsChanged {
+
+        let result = new SettingsChanged();
+        result.operandDimention = settings.operandDimention();
+        result.operationsCount = settings.operationsCount();
+        result.allowedOperations = [];
+
+        settings.allowedOperations().forEach(x => {
+            result.allowedOperations.push(parseInt(x));
+        });
+
+        return result;
     }
 }

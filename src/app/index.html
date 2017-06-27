@@ -112,12 +112,16 @@
         </div>
     </div>
 
-    <div id="progress">
+    <div id="equations">
         <div class="current">
-            <label>1+2=</label><input type="number" /><button>OK</button>
+            <div class="input-group">
+                <label data-bind="text: equations.current"></label>
+                <label>=</label>
+                <input type="number" data-bind="textInput: equations.answer"/>
+                <button data-bind="click: equations.answerGiven(equations.answer)">OK</button>
+            </div>            
         </div>
     </div>
-
 </body>
 <script src="scripts/index.js"></script>
 </html>
