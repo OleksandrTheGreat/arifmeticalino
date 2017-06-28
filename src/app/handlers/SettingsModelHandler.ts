@@ -8,14 +8,14 @@ import { SettingsChanged } from "../events";
 export class SettingsModelHandler {
 
     constructor(
-        private _settings: SettingsModel,
+        private _model: SettingsModel,
         private _bus: ABus
     ) {
-        this.saveInitialState(_settings);
+        this.saveInitialState(_model);
 
-        this.handleAllowedOperations(_settings);
-        this.handleOperationsCount(_settings);
-        this.handleOperandDimention(_settings);
+        this.handleAllowedOperations(_model);
+        this.handleOperationsCount(_model);
+        this.handleOperandDimention(_model);
     }
 
     private previousAllowedOperations: Array<string>;

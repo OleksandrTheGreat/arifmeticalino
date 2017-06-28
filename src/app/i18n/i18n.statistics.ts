@@ -22,8 +22,8 @@ export class i18nStatisticsEN implements Ii18nStatistics {
     header = "Statistics";
     answersTotal = "Answers total";
     rightAnswers = "Right answers";
-    rightAnswersFromFirstTry = "from first try";
-    rightAnswersFromSecondTry = "from second try";
-    rightAnswersFromThirdTry = "from third try";
+    rightAnswersFromFirstTry = "from the first try";
+    rightAnswersFromSecondTry = "from the second try";
+    rightAnswersFromThirdTry = "from the third try";
     wrongAnswers = "Wrong answers";
 }

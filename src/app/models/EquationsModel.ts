@@ -1,13 +1,15 @@
 import * as ko from "knockout";
 
 export class EquationsModel {
-    current: string;
-    answer: number;
-    
-    answerGiven(answer: number): void {
+    current: KnockoutObservable<string> = ko.observable("");
+    answer: KnockoutObservable<number> = ko.observable(null);
 
-        //!!!KO bug: this.answer - this points to a appModel (parent)
+    /*
+        workaround due to KO bug with click bind: child's click event handler refers to parent via "this"
+    */
+    givenAnswer: KnockoutObservable<number> = ko.observable(null);
 
-        console.log(answer);        
+    constructor() {
+        this.givenAnswer.extend({ notify: 'always' });
     }
 }
