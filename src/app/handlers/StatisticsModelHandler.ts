@@ -15,7 +15,7 @@ export class StatisticsModelHandler {
 
     private handleWrongAnswerGiven(): void {
 
-        this._bus.Subscribe(WrongAnswerGiven, (event: WrongAnswerGiven) => {
+        this._bus.Handle(WrongAnswerGiven, (event: WrongAnswerGiven) => {
 
             this._model.answersTotal(this._model.answersTotal() + 1);
         });
@@ -23,7 +23,7 @@ export class StatisticsModelHandler {
 
     private handleRightAnswerGiven(): void {
 
-        this._bus.Subscribe(RightAnswerGiven, (event: RightAnswerGiven) => {
+        this._bus.Handle(RightAnswerGiven, (event: RightAnswerGiven) => {
 
             this._model.answersTotal(this._model.answersTotal() + 1);
 

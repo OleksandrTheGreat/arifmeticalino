@@ -21,7 +21,7 @@ export class EquationsModelHandler {
 
     private handleSettingsChanged() {
 
-        this._bus.Subscribe(SettingsChanged, (event: SettingsChanged) => {
+        this._bus.Handle(SettingsChanged, (event: SettingsChanged) => {
 
             this._equationSettings = {
                 allowedOperations: event.allowedOperations,
