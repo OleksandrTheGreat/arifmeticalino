@@ -6064,7 +6064,7 @@ var AppModel = (function () {
         this.settings = new _1.SettingsModel([domain_1.Operations.Add], 1, 1);
         this.statistics = new _1.StatisticsModel();
         this.equations = new _1.EquationsModel();
-        this.i18n = new i18n_1.i18UA();
+        this.i18n = window.location.href.endsWith('en') ? new i18n_1.i18EN() : new i18n_1.i18UA();
     }
     return AppModel;
 }());
