@@ -11,6 +11,11 @@
 
 <body>
 
+    <div class="container-fluid text-right">
+        <a href="#" data-bind="click: function() {changeLanguage('en')}"><img src="img/gb.gif" alt="EN" /></a>
+        <a href="#" data-bind="click: function() {changeLanguage('ua')}"><img src="img/ua.gif" alt="UA" /></a>
+    </div>
+
     <div id="settings">
         <div class="header">
             <label data-bind="text: i18n.settings.header"></label>
