@@ -6064,8 +6064,19 @@ var AppModel = (function () {
         this.settings = new _1.SettingsModel([domain_1.Operations.Add], 1, 1);
         this.statistics = new _1.StatisticsModel();
         this.equations = new _1.EquationsModel();
-        this.i18n = window.location.href.endsWith('en') ? new i18n_1.i18EN() : new i18n_1.i18UA();
+        this.i18n = window.location.search.indexOf('lang=en') >= 0 ? new i18n_1.i18EN() : new i18n_1.i18UA();
     }
+    AppModel.prototype.changeLanguage = function (lang) {
+        switch (lang.toLowerCase()) {
+            case 'en':
+                if (!window.location.href.endsWith('#en'))
+                    window.location.href = window.location.href + '?lang=en';
+                break;
+            case 'ua':
+                window.location.href = window.location.href.replace('?lang=en', '');
+                break;
+        }
+    };
     return AppModel;
 }());
 exports.AppModel = AppModel;

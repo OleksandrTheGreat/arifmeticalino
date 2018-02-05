@@ -126,6 +126,7 @@ export declare class AppModel {
     statistics: StatisticsModel;
     equations: EquationsModel;
     i18n: Ii18n;
+    changeLanguage(lang: string): void;
 }
 /// <reference types="knockout" />
 export declare class EquationsModel {
